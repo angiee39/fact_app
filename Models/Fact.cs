@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FactApp.Models
 {
-    public class Fact
+    public partial class Fact
     {
         public int Id { get; set; }
-        public string FactQuestion { get; set; }
-        public string FactAnswer { get; set; }
-        public Fact()
-        {
-
-        }
+        public string Question { get; set; }
+        public string Answer { get; set; }
     }
 }

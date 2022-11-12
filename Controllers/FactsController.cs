@@ -5,17 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using FactApp.Data;
-using FactApp.Models;
+
+
 using Microsoft.AspNetCore.Authorization;
+using FactApp.Models;
 
 namespace FactApp.Controllers
 {
     public class FactsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly factsContext _context;
 
-        public FactsController(ApplicationDbContext context)
+        public FactsController(factsContext context)
         {
             _context = context;
         }
@@ -23,7 +24,7 @@ namespace FactApp.Controllers
         // GET: Facts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Fact.ToListAsync());
+            return View(await _context.Facts.ToListAsync());
         }
 
         // GET: Facts/ShowSearchForm
@@ -35,7 +36,7 @@ namespace FactApp.Controllers
         // POST: Facts/ShowSearchResults
         public async Task<IActionResult> ShowSearchResult(string SearchPhrase)
         {
-            return View("Index", await _context.Fact.Where( f => f.FactQuestion.Contains(SearchPhrase)).ToListAsync());
+            return View("Index", await _context.Facts.Where( f => f.Question.Contains(SearchPhrase)).ToListAsync());
         }
 
         // GET: Facts/Details/5
@@ -46,7 +47,7 @@ namespace FactApp.Controllers
                 return NotFound();
             }
 
-            var fact = await _context.Fact
+            var fact = await _context.Facts
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (fact == null)
             {
@@ -89,7 +90,7 @@ namespace FactApp.Controllers
                 return NotFound();
             }
 
-            var fact = await _context.Fact.FindAsync(id);
+            var fact = await _context.Facts.FindAsync(id);
             if (fact == null)
             {
                 return NotFound();
@@ -142,7 +143,7 @@ namespace FactApp.Controllers
                 return NotFound();
             }
 
-            var fact = await _context.Fact
+            var fact = await _context.Facts
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (fact == null)
             {
@@ -158,15 +159,15 @@ namespace FactApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var fact = await _context.Fact.FindAsync(id);
-            _context.Fact.Remove(fact);
+            var fact = await _context.Facts.FindAsync(id);
+            _context.Facts.Remove(fact);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FactExists(int id)
         {
-            return _context.Fact.Any(e => e.Id == id);
+            return _context.Facts.Any(e => e.Id == id);
         }
     }
 }
